@@ -24,10 +24,23 @@ describe('Seu teste', () => {
     sinon.restore();
   });
 
-  it('post /teams', async function () {
+  it('get /teams', async function () {
     const httpResponse = await chai.request(app).get('/teams');
 
     expect(httpResponse.status).to.equal(200);
+    // expect(httpResponse.body).to.be.deep.equal({
+    //   message: "\"name\" is required"
+    // });
+  });
+
+  it('get /teams/:id', async function () {
+    const httpResponse1 = await chai.request(app).get('/teams/1');
+
+    expect(httpResponse1.status).to.equal(200);
+
+    const httpResponse2 = await chai.request(app).get('/teams/123123');
+
+    expect(httpResponse2.status).to.equal(404);
     // expect(httpResponse.body).to.be.deep.equal({
     //   message: "\"name\" is required"
     // });

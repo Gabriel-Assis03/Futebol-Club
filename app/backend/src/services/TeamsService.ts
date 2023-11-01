@@ -13,7 +13,13 @@ export default class TeamsService {
   // ) { }
 
   public async getAllTeams(): Promise<ServiceResponse<teams[]>> {
-    const newBook = await this.model.findAll();
-    return { status: 'SUCCESSFUL', data: newBook };
+    const allTeams = await this.model.findAll();
+    return { status: 200, data: allTeams };
+  }
+
+  public async getTeamById(id: string): Promise<ServiceResponse<teams>> {
+    const team = await this.model.findByPk(id);
+    if (!team) return { status: 404, data: { message: `Team ${id} not found` } };
+    return { status: 200, data: team };
   }
 }
