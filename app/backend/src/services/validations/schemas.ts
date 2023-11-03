@@ -1,22 +1,10 @@
-// import Joi from 'joi';
+import Joi = require('joi');
 
-// const nameSchemaRequired = Joi.required();
-// const nameSchemaString = Joi.string();
-// const nameSchemaStringMin = Joi.string().min(3).messages({
-//   'string.min': '"name" length must be at least 3 characters long',
-// });
+const passwordSchema = Joi.string().min(6).required();
 
-// const priceSchemaRequired = Joi.required();
-// const priceSchemaString = Joi.string();
-// const priceSchemaStringMin = Joi.string().min(3).messages({
-//   'string.min': '"price" length must be at least 3 characters long',
-// });
+const emailSchema = Joi.string().email().required();
 
-// export default {
-//   nameSchemaRequired,
-//   nameSchemaString,
-//   nameSchemaStringMin,
-//   priceSchemaRequired,
-//   priceSchemaString,
-//   priceSchemaStringMin,
-// };
+export default {
+  passwordSchema,
+  emailSchema,
+};
