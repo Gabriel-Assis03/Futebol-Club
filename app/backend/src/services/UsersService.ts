@@ -1,6 +1,6 @@
 import bcrypt = require('bcryptjs');
 import UsersModel from '../database/models/UsersModel';
-import users from '../Interfaces/interUsers';
+import jwt from '../middlewares/jwt.util';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import validate from './validations/validations';
 
@@ -19,6 +19,8 @@ export default class UsersService {
     if (!foundUser || !bcrypt.compareSync(body.password, foundUser.dataValues.password)) {
       return { status: 400, data: { message: 'All fields must be filled' } };
     }
-    return { status: 200, data: foundUser };
+    const { id, username } = foundUser;
+    const token = jwt.sign({ id, username });
+    return { status: 200, data: { token } };
   }
 }
