@@ -11,4 +11,9 @@ export default class UsersController {
     const { status, data } = await this.usersService.login(req.body);
     res.status(status).json(data);
   }
+
+  public async getRole(req: Request, res: Response) {
+    const { status, data } = await this.usersService.role(req.body.role);
+    res.status(status).json(data);
+  }
 }
