@@ -1,8 +1,5 @@
-// src/routes/book.routes.ts
-
 import { Request, Router, Response } from 'express';
 import TeamsController from '../controllers/TeamsController';
-// import Validations from '../middlewares/Validations';
 
 const teamsController = new TeamsController();
 
