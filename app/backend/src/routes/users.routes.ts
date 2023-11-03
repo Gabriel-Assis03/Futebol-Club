@@ -1,10 +1,10 @@
 import { Request, Router, Response } from 'express';
-import TeamsController from '../controllers/TeamsController';
+import UsersController from '../controllers/UsersController';
 
-const teamsController = new TeamsController();
+const usersController = new UsersController();
 
 const router = Router();
 
-router.post('/', (req: Request, res: Response) => teamsController.getAllTeams(req, res));
+router.post('/', (req: Request, res: Response) => usersController.postLogin(req, res));
 
 export default router;

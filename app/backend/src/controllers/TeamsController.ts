@@ -1,5 +1,3 @@
-// src/controllers/BookController.ts
-
 import { Request, Response } from 'express';
 import TeamsService from '../services/TeamsService';
 // import mapStatusHTTP from '../utils/mapStatusHTTP';
