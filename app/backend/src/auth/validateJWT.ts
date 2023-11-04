@@ -1,14 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from '../middlewares/jwt.util';
-// import UsersService from '../services/UsersService';
 import UsersModel from '../database/models/UsersModel';
+
+function extractToken(bearerToken: string) {
+  return bearerToken.split(' ')[1];
+}
 
 async function verify(req: Request, res: Response, next: NextFunction)
   : Promise<object | undefined> {
-  const token = req.headers.authorization;
-  if (!token) {
+  const bearerToken = req.headers.authorization;
+  if (!bearerToken) {
     return res.status(401).json({ message: 'Token not found' });
   }
+  const token = extractToken(bearerToken);
   try {
     const decoded = jwt.verify(token);
     const user = await UsersModel.findByPk(decoded.id);
