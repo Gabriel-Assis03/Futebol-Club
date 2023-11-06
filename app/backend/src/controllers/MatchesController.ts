@@ -8,7 +8,13 @@ export default class UsersController {
   ) { }
 
   public async getAllMatches(req: Request, res: Response) {
-    const { status, data } = await this.matchesService.getAll();
-    res.status(status).json(data);
+    const { inProgress } = req.query;
+    if (!inProgress) {
+      const { status, data } = await this.matchesService.getAll();
+      res.status(status).json(data);
+    } else {
+      const { status, data } = await this.matchesService.getFilter(inProgress);
+      res.status(status).json(data);
+    }
   }
 }

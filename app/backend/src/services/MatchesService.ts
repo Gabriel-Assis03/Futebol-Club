@@ -67,6 +67,17 @@ export default class UsersService {
   public async getAll(): Promise<ServiceResponse<object[] | unknown>> {
     const allMatches = await this.matchesModel.findAll();
     const ret = await this.format(allMatches);
+    console.log('all');
+    return { status: 200, data: ret };
+  }
+
+  public async getFilter(filter: any): Promise<ServiceResponse<object[] | unknown>> {
+    const filterMatches = await this.matchesModel.findAll({
+      where: {
+        inProgress: JSON.parse(filter),
+      },
+    });
+    const ret = await this.format(filterMatches);
     return { status: 200, data: ret };
   }
 }
