@@ -6,11 +6,33 @@ import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import matches from '../Interfaces/interMatches';
 // import validate from './validations/validations';
 
+type format = {
+  id: number,
+  homeTeamId: number,
+  homeTeamGoals: number,
+  awayTeamId: number,
+  awayTeamGoals: number,
+  inProgress: boolean,
+  homeTeam: {
+    teamName: string,
+  },
+  awayTeam: { teamName: string },
+};
+
+type format2 = {
+  id: number,
+  homeTeamId: number,
+  homeTeamGoals: number,
+  awayTeamId: number,
+  awayTeamGoals: number,
+  inProgress: boolean,
+};
+
 export default class UsersService {
   private matchesModel = MatchesModel;
   private teamsModel = TeamsModel;
 
-  private format2(element: any): object {
+  private format2(element: format2): object {
     this.teamsModel.findAll();
     return {
       id: element.id,
@@ -22,9 +44,9 @@ export default class UsersService {
     };
   }
 
-  private async format(allMatches: any): Promise<object[]> {
+  private async format(allMatches: format2[]): Promise<format[] | unknown> {
     const ret = await Promise.all(
-      allMatches.map(async (e: matches): Promise<object | void> => {
+      allMatches.map(async (e: matches): Promise<object | void | unknown> => {
         const homeTeam = await this.teamsModel.findByPk(e.homeTeamId);
         const awayTeam = await this.teamsModel.findByPk(e.awayTeamId);
         const formatRet = this.format2(e);
@@ -42,7 +64,7 @@ export default class UsersService {
     return ret;
   }
 
-  public async getAll(): Promise<ServiceResponse<object[]>> {
+  public async getAll(): Promise<ServiceResponse<object[] | unknown>> {
     const allMatches = await this.matchesModel.findAll();
     const ret = await this.format(allMatches);
     return { status: 200, data: ret };
