@@ -64,14 +64,14 @@ export default class UsersService {
     return ret;
   }
 
-  public async getAll(): Promise<ServiceResponse<object[] | unknown>> {
+  public async getAll(): Promise<ServiceResponse<format[] | unknown>> {
     const allMatches = await this.matchesModel.findAll();
     const ret = await this.format(allMatches);
     console.log('all');
     return { status: 200, data: ret };
   }
 
-  public async getFilter(filter: any): Promise<ServiceResponse<object[] | unknown>> {
+  public async getFilter(filter: string): Promise<ServiceResponse<format[] | unknown>> {
     const filterMatches = await this.matchesModel.findAll({
       where: {
         inProgress: JSON.parse(filter),
@@ -79,5 +79,12 @@ export default class UsersService {
     });
     const ret = await this.format(filterMatches);
     return { status: 200, data: ret };
+  }
+
+  public async editMatches(id: string): Promise<ServiceResponse<format[] | unknown>> {
+    await this.matchesModel.update({ inProgress: false }, {
+      where: { id },
+    });
+    return { status: 200, data: { message: 'Finished' } };
   }
 }

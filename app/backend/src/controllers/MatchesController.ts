@@ -12,9 +12,15 @@ export default class UsersController {
     if (!inProgress) {
       const { status, data } = await this.matchesService.getAll();
       res.status(status).json(data);
-    } else {
+    } else if (typeof inProgress === 'string') {
       const { status, data } = await this.matchesService.getFilter(inProgress);
       res.status(status).json(data);
     }
+  }
+
+  public async editStatusMatches(req: Request, res: Response) {
+    const { id } = req.params;
+    const { status, data } = await this.matchesService.editMatches(id);
+    res.status(status).json(data);
   }
 }
