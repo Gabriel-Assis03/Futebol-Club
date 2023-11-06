@@ -13,7 +13,7 @@ export default class UsersController {
   }
 
   public async getRole(req: Request, res: Response) {
-    const { status, data } = await this.usersService.role(req.body.role);
+    const { status, data } = await this.usersService.role(req.headers.authorization);
     res.status(status).json(data);
   }
 }

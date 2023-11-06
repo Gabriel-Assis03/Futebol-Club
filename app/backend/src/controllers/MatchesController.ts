@@ -20,7 +20,14 @@ export default class UsersController {
 
   public async editStatusMatches(req: Request, res: Response) {
     const { id } = req.params;
-    const { status, data } = await this.matchesService.editMatches(id);
+    const { status, data } = await this.matchesService.editStatusMatches(id);
+    res.status(status).json(data);
+  }
+
+  public async editScoreMatches(req: Request, res: Response) {
+    console.log(req);
+    const { id } = req.params;
+    const { status, data } = await this.matchesService.editScoreMatches(id, req.body);
     res.status(status).json(data);
   }
 }

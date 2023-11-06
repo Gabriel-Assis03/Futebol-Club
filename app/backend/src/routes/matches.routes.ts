@@ -17,4 +17,10 @@ router.patch(
   (req: Request, res: Response) => matchesController.editStatusMatches(req, res),
 );
 
+router.patch(
+  '/:id',
+  VerifyToken,
+  (req: Request, res: Response) => matchesController.editScoreMatches(req, res),
+);
+
 export default router;

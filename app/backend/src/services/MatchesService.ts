@@ -6,6 +6,11 @@ import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import matches from '../Interfaces/interMatches';
 // import validate from './validations/validations';
 
+type Body = {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+};
+
 type format = {
   id: number,
   homeTeamId: number,
@@ -67,7 +72,6 @@ export default class UsersService {
   public async getAll(): Promise<ServiceResponse<format[] | unknown>> {
     const allMatches = await this.matchesModel.findAll();
     const ret = await this.format(allMatches);
-    console.log('all');
     return { status: 200, data: ret };
   }
 
@@ -81,8 +85,17 @@ export default class UsersService {
     return { status: 200, data: ret };
   }
 
-  public async editMatches(id: string): Promise<ServiceResponse<format[] | unknown>> {
+  public async editStatusMatches(id: string): Promise<ServiceResponse<format[] | unknown>> {
     await this.matchesModel.update({ inProgress: false }, {
+      where: { id },
+    });
+    return { status: 200, data: { message: 'Finished' } };
+  }
+
+  public async editScoreMatches(id: string, body: Body)
+    : Promise<ServiceResponse<format[] | unknown>> {
+    const { awayTeamGoals, homeTeamGoals } = body;
+    await this.matchesModel.update({ homeTeamGoals, awayTeamGoals }, {
       where: { id },
     });
     return { status: 200, data: { message: 'Finished' } };

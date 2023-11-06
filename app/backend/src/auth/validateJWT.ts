@@ -19,7 +19,7 @@ async function verify(req: Request, res: Response, next: NextFunction)
     if (!user) {
       return res.status(402).json({ message: 'Erro ao procurar usuário do token.' });
     }
-    req.body = user;
+    // req.body = user;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Token must be a valid token' });

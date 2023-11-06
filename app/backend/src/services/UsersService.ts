@@ -31,8 +31,17 @@ export default class UsersService {
     return { status: 200, data: { token } };
   }
 
-  public async role(role: string): Promise<ServiceResponse<object>> {
-    this.model.findAll();
-    return { status: 200, data: { role } };
+  public async role(token: string | undefined): Promise<ServiceResponse<object>> {
+    function extractToken(bearerToken: string) {
+      return bearerToken.split(' ')[1];
+    }
+    if (token) {
+      const decoded = jwt.verify(extractToken(token));
+      const user = await this.model.findByPk(decoded.id);
+      if (user) {
+        return { status: 200, data: { role: user.role } };
+      }
+    }
+    return { status: 400, data: { message: 'no rule' } };
   }
 }
