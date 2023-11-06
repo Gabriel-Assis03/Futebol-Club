@@ -30,4 +30,9 @@ export default class UsersController {
     const { status, data } = await this.matchesService.editScoreMatches(id, req.body);
     res.status(status).json(data);
   }
+
+  public async creatMatches(req: Request, res: Response) {
+    const { status, data } = await this.matchesService.creatMatches(req.body);
+    res.status(status).json(data);
+  }
 }

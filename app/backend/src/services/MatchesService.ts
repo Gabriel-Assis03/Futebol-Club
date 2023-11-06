@@ -6,9 +6,16 @@ import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import matches from '../Interfaces/interMatches';
 // import validate from './validations/validations';
 
-type Body = {
+type BodyEdit = {
   homeTeamGoals: number,
   awayTeamGoals: number,
+};
+
+type BodyCreat = {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+  homeTeamId: number,
+  awayTeamId: number,
 };
 
 type format = {
@@ -92,12 +99,29 @@ export default class UsersService {
     return { status: 200, data: { message: 'Finished' } };
   }
 
-  public async editScoreMatches(id: string, body: Body)
+  public async editScoreMatches(id: string, body: BodyEdit)
     : Promise<ServiceResponse<format[] | unknown>> {
     const { awayTeamGoals, homeTeamGoals } = body;
     await this.matchesModel.update({ homeTeamGoals, awayTeamGoals }, {
       where: { id },
     });
     return { status: 200, data: { message: 'Finished' } };
+  }
+
+  public async creatMatches(body: BodyCreat): Promise<ServiceResponse<format[] | unknown>> {
+    const {
+      awayTeamGoals,
+      awayTeamId,
+      homeTeamGoals,
+      homeTeamId,
+    } = body;
+    const newMatches = await this.matchesModel.create({
+      awayTeamGoals,
+      awayTeamId,
+      homeTeamGoals,
+      homeTeamId,
+      inProgress: true,
+    });
+    return { status: 201, data: newMatches };
   }
 }
