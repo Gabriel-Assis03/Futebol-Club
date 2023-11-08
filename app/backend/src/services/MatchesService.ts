@@ -4,7 +4,7 @@ import TeamsModel from '../database/models/TeamsModel';
 // import jwt from '../middlewares/jwt.util';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import matches from '../Interfaces/interMatches';
-// import validate from './validations/validations';
+import validate from './validations/validations';
 
 type BodyEdit = {
   homeTeamGoals: number,
@@ -123,6 +123,8 @@ export default class UsersService {
       homeTeamGoals,
       homeTeamId,
     } = body;
+    const error = await validate.validateNewMatches(homeTeamId, awayTeamId);
+    if (error) return { status: error.status, data: { message: error.message } };
     const newMatches = await this.matchesModel.create({
       awayTeamGoals,
       awayTeamId,
