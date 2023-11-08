@@ -22,21 +22,23 @@ type infoTeams = {
   efficiency: string,
 };
 
-function points(allMatches: matches[]): results {
+type team = 'awayTeamGoals' | 'homeTeamGoals';
+
+function points(allMatches: matches[], t1: team, t2: team): results {
   return allMatches.reduce((acc, game) => {
-    if (game.homeTeamGoals > game.awayTeamGoals) {
+    if (game[t1] > game[t2]) {
       acc.points += 3;
       acc.victories += 1;
     }
-    if (game.homeTeamGoals === game.awayTeamGoals) {
+    if (game[t1] === game[t2]) {
       acc.points += 1;
       acc.draws += 1;
     }
-    if (game.homeTeamGoals < game.awayTeamGoals) {
+    if (game[t1] < game[t2]) {
       acc.losses += 1;
     }
-    acc.goalsFavor += game.homeTeamGoals;
-    acc.goalsOwn += game.awayTeamGoals;
+    acc.goalsFavor += game[t1];
+    acc.goalsOwn += game[t2];
     return acc;
   }, { points: 0, draws: 0, victories: 0, losses: 0, goalsFavor: 0, goalsOwn: 0 });
 }

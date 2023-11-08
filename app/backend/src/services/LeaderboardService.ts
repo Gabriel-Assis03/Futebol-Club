@@ -28,7 +28,7 @@ export default class UsersService {
     return Promise.all(allTeams.map(async (e: teams): Promise<object | void | unknown> => {
       const allMatches = await this.matchesModel.findAll({ where: { homeTeamId: e.id,
         inProgress: false } });
-      const results = Calculate.points(allMatches);
+      const results = Calculate.points(allMatches, 'homeTeamGoals', 'awayTeamGoals');
       return {
         name: e.teamName,
         totalPoints: results.points,
@@ -44,9 +44,36 @@ export default class UsersService {
     }));
   }
 
-  public async getTable(): Promise<ServiceResponse<infoTeams[] | unknown>> {
+  private async infosAway(allTeams: teams[]): Promise<infoTeams[] | unknown> {
+    return Promise.all(allTeams.map(async (e: teams): Promise<object | void | unknown> => {
+      const allMatches = await this.matchesModel.findAll({ where: { awayTeamId: e.id,
+        inProgress: false } });
+      const results = Calculate.points(allMatches, 'awayTeamGoals', 'homeTeamGoals');
+      return {
+        name: e.teamName,
+        totalPoints: results.points,
+        totalGames: allMatches.length,
+        totalVictories: results.victories,
+        totalDraws: results.draws,
+        totalLosses: results.losses,
+        goalsFavor: results.goalsFavor,
+        goalsOwn: results.goalsOwn,
+        goalsBalance: results.goalsFavor - results.goalsOwn,
+        efficiency: ((results.points / (allMatches.length * 3)) * 100).toFixed(2),
+      };
+    }));
+  }
+
+  public async getTableHome(): Promise<ServiceResponse<infoTeams[] | unknown>> {
     const allTeams = await this.teamsModel.findAll();
     const infosHome = await this.infosHome(allTeams) as infoTeams[];
+    const orderTable = Calculate.order(infosHome);
+    return { status: 200, data: orderTable };
+  }
+
+  public async getTableAway(): Promise<ServiceResponse<infoTeams[] | unknown>> {
+    const allTeams = await this.teamsModel.findAll();
+    const infosHome = await this.infosAway(allTeams) as infoTeams[];
     const orderTable = Calculate.order(infosHome);
     return { status: 200, data: orderTable };
   }

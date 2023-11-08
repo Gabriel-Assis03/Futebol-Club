@@ -7,8 +7,13 @@ export default class UsersController {
     private leaderboardService = new LeaderboardService(),
   ) { }
 
-  public async getAllMatches(_req: Request, res: Response) {
-    const { status, data } = await this.leaderboardService.getTable();
+  public async getMatchesHome(_req: Request, res: Response) {
+    const { status, data } = await this.leaderboardService.getTableHome();
+    res.status(status).json(data);
+  }
+
+  public async getMatchesAway(_req: Request, res: Response) {
+    const { status, data } = await this.leaderboardService.getTableAway();
     res.status(status).json(data);
   }
 }
