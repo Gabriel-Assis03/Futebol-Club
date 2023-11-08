@@ -25,7 +25,6 @@ export default class UsersController {
   }
 
   public async editScoreMatches(req: Request, res: Response) {
-    console.log(req);
     const { id } = req.params;
     const { status, data } = await this.matchesService.editScoreMatches(id, req.body);
     res.status(status).json(data);

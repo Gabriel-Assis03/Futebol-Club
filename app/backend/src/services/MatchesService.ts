@@ -11,6 +11,14 @@ type BodyEdit = {
   awayTeamGoals: number,
 };
 
+// type matchesTest = {
+//   homeTeamId: number,
+//   homeTeamGoals: number,
+//   awayTeamId: number,
+//   awayTeamGoals: number,
+//   inProgress: boolean,
+// };
+
 type BodyCreat = {
   homeTeamGoals: number,
   awayTeamGoals: number,
@@ -32,7 +40,7 @@ type format = {
 };
 
 type format2 = {
-  id: number,
+  id?: number | undefined,
   homeTeamId: number,
   homeTeamGoals: number,
   awayTeamId: number,

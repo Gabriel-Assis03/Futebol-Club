@@ -4,7 +4,7 @@ import TeamsModel from './TeamsModel';
 
 class MatchesModel extends Model<InferAttributes<MatchesModel>,
 InferCreationAttributes<MatchesModel>> {
-  declare id: number;
+  declare id?: number;
   declare homeTeamId: number;
   declare homeTeamGoals: number;
   declare awayTeamId: number;
