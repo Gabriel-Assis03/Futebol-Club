@@ -64,6 +64,27 @@ export default class UsersService {
     }));
   }
 
+  private async infosAll(allTeams: teams[]): Promise<infoTeams[] | unknown> {
+    const infosHome = await this.infosHome(allTeams) as infoTeams[];
+    const infosAway = await this.infosAway(allTeams) as infoTeams[];
+    return Promise.all(infosHome.map(async (e: infoTeams): Promise<object | void | unknown> => {
+      const infosTeam = await infosAway.filter((t) => e.name === t.name);
+      return {
+        name: e.name,
+        totalPoints: e.totalPoints + infosTeam[0].totalPoints,
+        totalGames: e.totalGames + infosTeam[0].totalGames,
+        totalVictories: e.totalVictories + infosTeam[0].totalVictories,
+        totalDraws: e.totalDraws + infosTeam[0].totalDraws,
+        totalLosses: e.totalLosses + infosTeam[0].totalLosses,
+        goalsFavor: e.goalsFavor + infosTeam[0].goalsFavor,
+        goalsOwn: e.goalsOwn + infosTeam[0].goalsOwn,
+        goalsBalance: e.goalsBalance + infosTeam[0].goalsBalance,
+        efficiency: (((e.totalPoints + infosTeam[0].totalPoints)
+          / ((e.totalGames + infosTeam[0].totalGames) * 3)) * 100).toFixed(2),
+      };
+    }));
+  }
+
   public async getTableHome(): Promise<ServiceResponse<infoTeams[] | unknown>> {
     const allTeams = await this.teamsModel.findAll();
     const infosHome = await this.infosHome(allTeams) as infoTeams[];
@@ -73,8 +94,15 @@ export default class UsersService {
 
   public async getTableAway(): Promise<ServiceResponse<infoTeams[] | unknown>> {
     const allTeams = await this.teamsModel.findAll();
-    const infosHome = await this.infosAway(allTeams) as infoTeams[];
-    const orderTable = Calculate.order(infosHome);
+    const infosAway = await this.infosAway(allTeams) as infoTeams[];
+    const orderTable = Calculate.order(infosAway);
+    return { status: 200, data: orderTable };
+  }
+
+  public async getTableAll(): Promise<ServiceResponse<infoTeams[] | unknown>> {
+    const allTeams = await this.teamsModel.findAll();
+    const infosAway = await this.infosAll(allTeams) as infoTeams[];
+    const orderTable = Calculate.order(infosAway);
     return { status: 200, data: orderTable };
   }
 }

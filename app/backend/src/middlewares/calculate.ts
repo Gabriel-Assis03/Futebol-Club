@@ -61,19 +61,7 @@ function order(infosTable: infoTeams[]): infoTeams[] {
   });
 }
 
-// function utilization(payload: TokenPayload): string {
-//   const token = jwt.sign(payload, secret);
-//   return token;
-// }
-
-// function goalDifference(payload: TokenPayload): string {
-//   const token = jwt.sign(payload, secret);
-//   return token;
-// }
-
 export default {
   points,
   order,
-  // utilization,
-  // goalDifference,
 };
