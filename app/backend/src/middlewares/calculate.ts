@@ -9,6 +9,19 @@ type results = {
   goalsOwn: number,
 };
 
+type infoTeams = {
+  name: string,
+  totalPoints: number,
+  totalGames: number,
+  totalVictories: number,
+  totalDraws: number,
+  totalLosses: number,
+  goalsFavor: number,
+  goalsOwn: number,
+  goalsBalance: number,
+  efficiency: string,
+};
+
 function points(allMatches: matches[]): results {
   return allMatches.reduce((acc, game) => {
     if (game.homeTeamGoals > game.awayTeamGoals) {
@@ -28,6 +41,24 @@ function points(allMatches: matches[]): results {
   }, { points: 0, draws: 0, victories: 0, losses: 0, goalsFavor: 0, goalsOwn: 0 });
 }
 
+function order(infosTable: infoTeams[]): infoTeams[] {
+  return infosTable.sort((a, b) => {
+    if (b.totalPoints !== a.totalPoints) {
+      return b.totalPoints - a.totalPoints;
+    }
+
+    if (b.totalVictories !== a.totalVictories) {
+      return b.totalVictories - a.totalVictories;
+    }
+
+    if (b.goalsBalance !== a.goalsBalance) {
+      return b.goalsBalance - a.goalsBalance;
+    }
+
+    return b.goalsFavor - a.goalsFavor;
+  });
+}
+
 // function utilization(payload: TokenPayload): string {
 //   const token = jwt.sign(payload, secret);
 //   return token;
@@ -40,6 +71,7 @@ function points(allMatches: matches[]): results {
 
 export default {
   points,
+  order,
   // utilization,
   // goalDifference,
 };
