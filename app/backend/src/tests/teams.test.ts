@@ -46,4 +46,45 @@ describe('Seu teste', () => {
     // });
   });
 
+  it('get /matches', async function () {
+    const httpResponse1 = await chai.request(app).get('/matches');
+
+    expect(httpResponse1.status).to.equal(200);
+
+    const httpResponse2 = await chai.request(app).get('/leaderboard');
+
+    expect(httpResponse2.status).to.equal(200);
+
+    const httpResponse3 = await chai.request(app).get('/matches?inProgress=true');
+
+    expect(httpResponse3.status).to.equal(200);
+
+    // expect(httpResponse.body).to.be.deep.equal({
+    //   message: "\"name\" is required"
+    // });
+  });
+
+  it('get /matches', async function () {
+    const httpResponse1 = await chai.request(app).get('/leaderboard/home');
+
+    expect(httpResponse1.status).to.equal(200);
+
+    const httpResponse2 = await chai.request(app).get('/leaderboard/away');
+
+    expect(httpResponse2.status).to.equal(200);
+
+    const httpResponse3 = await chai.request(app).post('/matches').set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsImlhdCI6MTY5OTA0NDA0NH0.Ys7blOXYwMM8bq7iiteKV8FHHhRJRPzhgxpho5s-618').send({
+      "homeTeamId": 2,
+      "awayTeamId": 1,
+      "homeTeamGoals": 2,
+      "awayTeamGoals": 2
+    });
+
+    expect(httpResponse3.status).to.equal(401);
+
+    // expect(httpResponse.body).to.be.deep.equal({
+    //   message: "\"name\" is required"
+    // });
+  });
+
 });
